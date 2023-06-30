@@ -1,3 +1,4 @@
+using LearnAspNetCoreMVC;
 using LearnAspNetCoreMVC.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//use custom middle ware
+app.UseCustomMiddleware();
+
 app.UseStaticFiles();
 
 app.UseRouting();
