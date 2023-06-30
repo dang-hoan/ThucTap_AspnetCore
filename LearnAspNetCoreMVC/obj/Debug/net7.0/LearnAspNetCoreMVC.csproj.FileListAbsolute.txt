@@ -256,3 +256,5 @@ D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\obj\Debug\net7.0\LearnAspN
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\obj\Debug\net7.0\LearnAspNetCoreMVC.genruntimeconfig.cache
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\obj\Debug\net7.0\ref\LearnAspNetCoreMVC.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.CodeAnalysis.Elfie.dll
+D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\AutoMapper.dll
+D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

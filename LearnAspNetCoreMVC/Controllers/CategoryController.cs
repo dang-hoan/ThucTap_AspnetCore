@@ -1,4 +1,5 @@
-﻿using LearnAspNetCoreMVC.Data;
+﻿using AutoMapper;
+using LearnAspNetCoreMVC.Data;
 using LearnAspNetCoreMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,9 +8,11 @@ namespace LearnAspNetCoreMVC.Controllers
     public class CategoryController : Controller
     {
         private readonly ApplicationDBContext _db;
-        public CategoryController(ApplicationDBContext db)
+        private readonly IMapper _iMapper;
+        public CategoryController(ApplicationDBContext db, IMapper iMapper)
         {
             _db = db;
+            _iMapper = iMapper;
         }
         //GET
         public IActionResult Index() {
@@ -17,11 +20,13 @@ namespace LearnAspNetCoreMVC.Controllers
                                                     orderby category.Name
                                                     select category;
 
-            CategoryViewModel viewModel = new CategoryViewModel()
-            {
-                Categories = objCategoryList,
-                DisplayOrder = null
-            };
+            //CategoryViewModel viewModel = new CategoryViewModel()
+            //{
+            //    Categories = objCategoryList,
+            //    DisplayOrder = null
+            //};
+
+            var viewModel = _iMapper.Map<CategoryViewModel>(objCategoryList);
             return View(viewModel);
         }
 
@@ -129,12 +134,5 @@ namespace LearnAspNetCoreMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        //POST
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Search()
-        //{
-        //    return Index();
-        //}
     }
 }
