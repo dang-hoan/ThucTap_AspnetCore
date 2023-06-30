@@ -1,25 +1,40 @@
-﻿using LearnAspNetCoreMVC.Data;
+﻿using LearnAspNetCoreMVC.CommandHandlers;
+using LearnAspNetCoreMVC.CommandHandlers.Category;
+using LearnAspNetCoreMVC.Commands.Category;
 using LearnAspNetCoreMVC.Models;
+using LearnAspNetCoreMVC.Queries.Category;
+using LearnAspNetCoreMVC.QueryHandlers.Category;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearnAspNetCoreMVC.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDBContext _db;
-        public CategoryController(ApplicationDBContext db)
+        private readonly AddCommandHandler _addCommandHandler;
+        private readonly DeleteCommandHandler _deleteCommandHandler;
+        private readonly UpdateCommandHandler _updateCommandHandler;
+
+        private readonly GetAllQueryHandler _getAllQueryHandler;
+        private readonly GetByIdQueryHandler _getByIdQueryHandler;
+        private readonly SearchQueryHandler _searchQueryHandler;
+
+        public CategoryController(AddCommandHandler addCommandHandler, DeleteCommandHandler deleteCommandHandler,
+                                UpdateCommandHandler updateCommandHandler, GetByIdQueryHandler getByIdQueryHandler,
+                                SearchQueryHandler searchQueryHandler, GetAllQueryHandler getAllQueryHandler)
         {
-            _db = db;
+            _addCommandHandler = addCommandHandler;
+            _deleteCommandHandler = deleteCommandHandler;
+            _updateCommandHandler = updateCommandHandler;
+
+            _getByIdQueryHandler = getByIdQueryHandler;
+            _searchQueryHandler = searchQueryHandler;
+            _getAllQueryHandler = getAllQueryHandler;
         }
         //GET
         public IActionResult Index() {
-            IEnumerable<Category> objCategoryList = from category in _db.Categories
-                                                    orderby category.Name
-                                                    select category;
-
             CategoryViewModel viewModel = new CategoryViewModel()
             {
-                Categories = objCategoryList,
+                Categories = _getAllQueryHandler.Handle(),
                 DisplayOrder = null
             };
             return View(viewModel);
@@ -28,15 +43,14 @@ namespace LearnAspNetCoreMVC.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(CategoryViewModel obj)
+        public IActionResult Index(SearchQuery obj)
         {
-            IEnumerable<Category> res = from category in _db.Categories
-                                        where (obj.Name == null || category.Name.Contains(obj.Name)) && (obj.DisplayOrder == null || category.DisplayOrder == obj.DisplayOrder)
-                                        orderby category.Name
-                                        select category;                                        
-
-            obj.Categories = res;
-            return View(obj);
+            CategoryViewModel viewModel = new CategoryViewModel()
+            {
+                Categories = _searchQueryHandler.Handle(obj),
+                DisplayOrder = null
+            };
+            return View(viewModel);
         }
 
         //GET
@@ -48,14 +62,20 @@ namespace LearnAspNetCoreMVC.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Category obj)
+        public IActionResult Create(AddCommand obj)
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
-                TempData["success"] = "Category created successfully!";
-                return RedirectToAction("Index");
+                if (_addCommandHandler.Handle(obj) > 0)
+                {
+                    TempData["success"] = "Category created successfully!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["error"] = "There is an error in adding data to database!";
+                    return View(obj);
+                }
             }
             return View(obj);
         }
@@ -67,9 +87,7 @@ namespace LearnAspNetCoreMVC.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _db.Categories.Find(id);
-            //var categoryFromDb = _db.Categories.FirstOrDefault(u => u.Id == id);
-            //var categoryFromDb = _db.Categories.SingleOrDefault(u => u.Id == id);
+            var categoryFromDb = _getByIdQueryHandler.Handle(new GetByIdQuery { Id = (int)id });
 
             if (categoryFromDb == null)
             {
@@ -82,14 +100,20 @@ namespace LearnAspNetCoreMVC.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Category obj)
+        public IActionResult Edit(UpdateCommand obj)
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
-                TempData["success"] = "Category updated successfully!";
-                return RedirectToAction("Index");
+                if (_updateCommandHandler.Handle(obj) > 0)
+                {
+                    TempData["success"] = "Category updated successfully!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["error"] = "There is an error in updating data to database!";
+                    return View(obj);
+                }
             }
             return View(obj);
         }
@@ -100,9 +124,7 @@ namespace LearnAspNetCoreMVC.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _db.Categories.Find(id);
-            //var categoryFromDb = _db.Categories.FirstOrDefault(u => u.Id == id);
-            //var categoryFromDb = _db.Categories.SingleOrDefault(u => u.Id == id);
+            var categoryFromDb = _getByIdQueryHandler.Handle(new GetByIdQuery { Id = (int)id });
 
             if (categoryFromDb == null)
             {
@@ -115,26 +137,22 @@ namespace LearnAspNetCoreMVC.Controllers
         //POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeletePOST(int? id)
+        public IActionResult DeletePOST(int id)
         {
-            var obj = _db.Categories.Find(id);
-            if (obj == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                if (_deleteCommandHandler.Handle(id) > 0)
+                {
+                    TempData["success"] = "Category deleted successfully!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["error"] = "There is an error in deleting data to database!";
+                    return View(id);
+                }
             }
-
-            _db.Categories.Remove(obj);
-            _db.SaveChanges();
-            TempData["success"] = "Category deleted successfully!";
-            return RedirectToAction("Index");
+            return View(id);
         }
-
-        //POST
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Search()
-        //{
-        //    return Index();
-        //}
     }
 }

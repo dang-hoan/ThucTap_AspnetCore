@@ -1,4 +1,7 @@
+using LearnAspNetCoreMVC.CommandHandlers;
+using LearnAspNetCoreMVC.CommandHandlers.Category;
 using LearnAspNetCoreMVC.Data;
+using LearnAspNetCoreMVC.QueryHandlers.Category;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +11,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+
+builder.Services.AddScoped<AddCommandHandler>();
+builder.Services.AddScoped<DeleteCommandHandler>();
+builder.Services.AddScoped<UpdateCommandHandler>();
+builder.Services.AddScoped<GetAllQueryHandler>();
+builder.Services.AddScoped<GetByIdQueryHandler>();
+builder.Services.AddScoped<SearchQueryHandler>();
 
 var app = builder.Build();
 
