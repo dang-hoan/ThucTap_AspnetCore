@@ -28,8 +28,8 @@
                 <span asp-validation-for="DisplayOrder" class="text-danger"></span>
             </div>
             <div class="block-size">
-                <label asp-for="CompanyID" class="control-label">Company name:</label>
-                <select asp-for="CompanyID" class="form-select" placeholder="Company name (TNHH 1 thanh vien)">
+                <label asp-for="CompanyId" class="control-label">Company name:</label>
+                <select asp-for="CompanyId" class="form-select" placeholder="Company name (TNHH 1 thanh vien)">
                     @{
                         <option value="-1">All</option>
                         var listCompanies = TempData["ListCompanies"] as IEnumerable<Company>;
@@ -42,7 +42,7 @@
                         }
                     }
                 </select>
-                <span asp-validation-for="CompanyID" class="text-danger"></span>
+                <span asp-validation-for="CompanyId" class="text-danger"></span>
             </div>
         </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Search</button>
@@ -71,13 +71,13 @@
             @foreach(var obj in Model.Products)
             {
                 <tr>
-                    <td width="10%">
+                    <td width="15%">
                         @obj.Id
                     </td>
                     <td width="30%">
                         @obj.Name
                     </td>
-                    <td width="20%">
+                    <td width="15%">
                         @obj.DisplayOrder
                     </td>
                     <td width="40%">

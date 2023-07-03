@@ -18,8 +18,8 @@
             <span asp-validation-for="DisplayOrder" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="CompanyID"></label>
-            <select asp-for="CompanyID" class="form-select">
+            <label asp-for="CompanyId"></label>
+            <select asp-for="CompanyId" class="form-select">
                 @{
                     var listCompanies = TempData["ListCompanies"] as IEnumerable<Company>;
                     if (listCompanies != null)
@@ -31,7 +31,7 @@
                     }
                 }
             </select>
-            <span asp-validation-for="CompanyID" class="text-danger"></span>
+            <span asp-validation-for="CompanyId" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
         <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="width:150px">

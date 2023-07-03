@@ -8,8 +8,8 @@ namespace LearnAspNetCoreMVC.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ApplicationDBContext _db;
-        public ProductController(ApplicationDBContext db)
+        private readonly Data.ApplicationDBContext _db;
+        public ProductController(Data.ApplicationDBContext db)
         {
             _db = db;
         }
@@ -33,7 +33,7 @@ namespace LearnAspNetCoreMVC.Controllers
                 Products = objProductList,
                 Id = null,
                 DisplayOrder = null,
-                CompanyID = null
+                CompanyId = null
             };
             InitCompaniesCombobox();
             return View(viewModel);
@@ -46,10 +46,10 @@ namespace LearnAspNetCoreMVC.Controllers
         {
             IEnumerable<Product> res = from Product in _db.Products
                                        where Product.IsDelete == false
-                                       && (obj.Id == null || Product.Id == obj.Id) 
-                                       && (obj.Name == null || Product.Name.Contains(obj.Name)) 
+                                       && (obj.Id == null || Product.Id == obj.Id)
+                                       && (obj.Name == null || Product.Name.Contains(obj.Name))
                                        && (obj.DisplayOrder == null || Product.DisplayOrder == obj.DisplayOrder)
-                                       && (obj.CompanyID == null || obj.CompanyID == -1 || Product.CompanyID == obj.CompanyID)
+                                       && (obj.CompanyId == null || obj.CompanyId == -1 || Product.CompanyId == obj.CompanyId)
                                        let compareDate = Product.UpdateDate != null ? Product.UpdateDate : Product.CreateDate
                                        orderby compareDate descending, Product.Name
                                        select Product;
@@ -71,6 +71,7 @@ namespace LearnAspNetCoreMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Product obj)
         {
+            ModelState.Remove("Company");
             if (ModelState.IsValid)
             {
                 obj.CreateDate = DateTime.Now;
@@ -107,6 +108,7 @@ namespace LearnAspNetCoreMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Product obj)
         {
+            ModelState.Remove("Company");
             if (ModelState.IsValid)
             {
                 obj.UpdateDate = DateTime.Now;
@@ -126,16 +128,16 @@ namespace LearnAspNetCoreMVC.Controllers
             }
 
             var ProductFromDb = (from product in _db.Products
-                                 join company in _db.Companies on product.CompanyID equals company.Id
-                                 where product.Id == id && company != null
+                                 join company in _db.Companies on product.CompanyId equals company.Id
+                                 where product.Id == id
                                  select new Product
                                  {
                                      Id = product.Id,
                                      Name = product.Name,
                                      DisplayOrder = product.DisplayOrder,
-                                     CompanyID = product.CompanyID,
+                                     CompanyId = product.CompanyId,
                                      Company = company,
-                                     CreateDate = product.CreateDate, 
+                                     CreateDate = product.CreateDate,
                                      UpdateDate = product.UpdateDate,
                                      DeleteDate = product.DeleteDate,
                                      IsDelete = product.IsDelete

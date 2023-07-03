@@ -1,28 +1,25 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
 
-namespace LearnAspNetCoreMVC.Models
+namespace LearnAspNetCoreMVC.Models;
+
+public partial class Product
 {
-    public class Product
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
-        [DisplayName("Display order")]
-        [Range(1, 100, ErrorMessage = "Display Order must be between 1 and 100 only!!")]
-        public int DisplayOrder { get; set; }
+    public int DisplayOrder { get; set; }
 
-        [ForeignKey("Company")]
-        public int CompanyID { get; set; }
-        public Company? Company { get; set; }
-        public DateTime? CreateDate { get; set; } = null;
-        public DateTime? UpdateDate { get; set; } = null;
-        public DateTime? DeleteDate { get; set; } = null;
-        public bool IsDelete { get; set; } = false;
-    }
+    public int CompanyId { get; set; }
+
+    public DateTime? CreateDate { get; set; }
+
+    public DateTime? UpdateDate { get; set; }
+
+    public DateTime? DeleteDate { get; set; }
+
+    public bool IsDelete { get; set; }
+
+    public virtual Company Company { get; set; } = null!;
 }

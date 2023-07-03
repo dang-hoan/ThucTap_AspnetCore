@@ -1,0 +1,6 @@
+*Code first:
+add-migration <Name>
+update-database
+
+*DB first:
+Scaffold-DbContext "Name=ConnectionStrings:DefaultConnection" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
