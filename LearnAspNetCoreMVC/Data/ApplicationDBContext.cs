@@ -9,7 +9,14 @@ namespace LearnAspNetCoreMVC.Data
         {
 
         }
-        
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>()
+                .HasOne(b => b.Company)
+                .WithMany(a => a.Products)
+                .HasForeignKey(b => b.CompanyID);
+        }
     }
 }

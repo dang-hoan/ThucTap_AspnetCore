@@ -4,22 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LearnAspNetCoreMVC.Controllers
 {
-    public class CategoryController : Controller
+    public class ProductController : Controller
     {
         private readonly ApplicationDBContext _db;
-        public CategoryController(ApplicationDBContext db)
+        public ProductController(ApplicationDBContext db)
         {
             _db = db;
         }
         //GET
-        public IActionResult Index() {
-            IEnumerable<Category> objCategoryList = from category in _db.Categories
-                                                    orderby category.Name
-                                                    select category;
+        public IActionResult Index()
+        {
+            IEnumerable<Product> objProductList = from Product in _db.Products
+                                                  orderby Product.Name
+                                                  select Product;
 
-            CategoryViewModel viewModel = new CategoryViewModel()
+            ProductViewModel viewModel = new ProductViewModel()
             {
-                Categories = objCategoryList,
+                Products = objProductList,
                 DisplayOrder = null
             };
             return View(viewModel);
@@ -28,14 +29,14 @@ namespace LearnAspNetCoreMVC.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(CategoryViewModel obj)
+        public IActionResult Index(ProductViewModel obj)
         {
-            IEnumerable<Category> res = from category in _db.Categories
-                                        where (obj.Name == null || category.Name.Contains(obj.Name)) && (obj.DisplayOrder == null || category.DisplayOrder == obj.DisplayOrder)
-                                        orderby category.Name
-                                        select category;                                        
+            IEnumerable<Product> res = from Product in _db.Products
+                                       where (obj.Name == null || Product.Name.Contains(obj.Name)) && (obj.DisplayOrder == null || Product.DisplayOrder == obj.DisplayOrder)
+                                       orderby Product.Name
+                                       select Product;
 
-            obj.Categories = res;
+            obj.Products = res;
             return View(obj);
         }
 
@@ -44,17 +45,17 @@ namespace LearnAspNetCoreMVC.Controllers
         {
             return View();
         }
-        
+
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Category obj)
+        public IActionResult Create(Product obj)
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
+                _db.Products.Add(obj);
                 _db.SaveChanges();
-                TempData["success"] = "Category created successfully!";
+                TempData["success"] = "Product created successfully!";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -67,28 +68,28 @@ namespace LearnAspNetCoreMVC.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _db.Categories.Find(id);
-            //var categoryFromDb = _db.Categories.FirstOrDefault(u => u.Id == id);
-            //var categoryFromDb = _db.Categories.SingleOrDefault(u => u.Id == id);
+            var ProductFromDb = _db.Products.Find(id);
+            //var ProductFromDb = _db.Products.FirstOrDefault(u => u.Id == id);
+            //var ProductFromDb = _db.Products.SingleOrDefault(u => u.Id == id);
 
-            if (categoryFromDb == null)
+            if (ProductFromDb == null)
             {
                 return NotFound();
             }
 
-            return View(categoryFromDb);
+            return View(ProductFromDb);
         }
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Category obj)
+        public IActionResult Edit(Product obj)
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
+                _db.Products.Update(obj);
                 _db.SaveChanges();
-                TempData["success"] = "Category updated successfully!";
+                TempData["success"] = "Product updated successfully!";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -100,16 +101,16 @@ namespace LearnAspNetCoreMVC.Controllers
             {
                 return NotFound();
             }
-            var categoryFromDb = _db.Categories.Find(id);
-            //var categoryFromDb = _db.Categories.FirstOrDefault(u => u.Id == id);
-            //var categoryFromDb = _db.Categories.SingleOrDefault(u => u.Id == id);
+            var ProductFromDb = _db.Products.Find(id);
+            //var ProductFromDb = _db.Products.FirstOrDefault(u => u.Id == id);
+            //var ProductFromDb = _db.Products.SingleOrDefault(u => u.Id == id);
 
-            if (categoryFromDb == null)
+            if (ProductFromDb == null)
             {
                 return NotFound();
             }
 
-            return View(categoryFromDb);
+            return View(ProductFromDb);
         }
 
         //POST
@@ -117,15 +118,15 @@ namespace LearnAspNetCoreMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePOST(int? id)
         {
-            var obj = _db.Categories.Find(id);
+            var obj = _db.Products.Find(id);
             if (obj == null)
             {
                 return NotFound();
             }
 
-            _db.Categories.Remove(obj);
+            _db.Products.Remove(obj);
             _db.SaveChanges();
-            TempData["success"] = "Category deleted successfully!";
+            TempData["success"] = "Product deleted successfully!";
             return RedirectToAction("Index");
         }
 

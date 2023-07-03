@@ -1,10 +1,10 @@
-﻿@model Category
+﻿@model Product
 
 <form method="post" asp-action="Delete">
     @*<input asp-for="Id" hidden />*@
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Delete Category</h2>
+            <h2 class="text-primary">Delete Product</h2>
             <hr />
         </div>
         <div class="mb-3">
@@ -16,7 +16,7 @@
             <input asp-for="DisplayOrder" class="form-control" disabled />
         </div>
         <button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
-        <a asp-controller="Category" asp-action="Index" class="btn btn-secondary" style="width:150px">
+        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="width:150px">
             Back to list
         </a>
     </div>
