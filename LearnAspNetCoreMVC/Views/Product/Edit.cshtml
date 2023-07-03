@@ -17,6 +17,24 @@
             <input asp-for="DisplayOrder" class="form-control" />
             <span asp-validation-for="DisplayOrder" class="text-danger"></span>
         </div>
+        <div class="mb-3">
+            <label asp-for="CompanyID"></label>
+            <select asp-for="CompanyID" class="form-select">
+                @{
+                    var listCompanies = TempData["ListCompanies"] as IEnumerable<Company>;
+                    if (listCompanies != null)
+                    {
+                        foreach (Company company in listCompanies)
+                        {
+                            <option value="@company.Id">@company.Name</option>
+                        }
+                    }
+                }
+            </select>
+            <span asp-validation-for="CompanyID" class="text-danger"></span>
+        </div>
+        <input asp-for="CreateDate" hidden />
+        <input asp-for="UpdateDate" hidden />
         <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
         <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="width:150px">
             Back to list

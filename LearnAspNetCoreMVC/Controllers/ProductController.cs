@@ -1,6 +1,8 @@
 ﻿using LearnAspNetCoreMVC.Data;
 using LearnAspNetCoreMVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LearnAspNetCoreMVC.Controllers
 {
@@ -11,18 +13,29 @@ namespace LearnAspNetCoreMVC.Controllers
         {
             _db = db;
         }
+        public void InitCompaniesCombobox()
+        {
+            TempData["ListCompanies"] = from Company in _db.Companies
+                                        where Company.IsDelete == false
+                                        select Company;
+        }
         //GET
         public IActionResult Index()
         {
             IEnumerable<Product> objProductList = from Product in _db.Products
-                                                  orderby Product.Name
+                                                  where Product.IsDelete == false
+                                                  let compareDate = Product.UpdateDate != null ? Product.UpdateDate : Product.CreateDate
+                                                  orderby compareDate descending, Product.Name
                                                   select Product;
 
             ProductViewModel viewModel = new ProductViewModel()
             {
                 Products = objProductList,
-                DisplayOrder = null
+                Id = null,
+                DisplayOrder = null,
+                CompanyID = null
             };
+            InitCompaniesCombobox();
             return View(viewModel);
         }
 
@@ -32,17 +45,24 @@ namespace LearnAspNetCoreMVC.Controllers
         public IActionResult Index(ProductViewModel obj)
         {
             IEnumerable<Product> res = from Product in _db.Products
-                                       where (obj.Name == null || Product.Name.Contains(obj.Name)) && (obj.DisplayOrder == null || Product.DisplayOrder == obj.DisplayOrder)
-                                       orderby Product.Name
+                                       where Product.IsDelete == false
+                                       && (obj.Id == null || Product.Id == obj.Id) 
+                                       && (obj.Name == null || Product.Name.Contains(obj.Name)) 
+                                       && (obj.DisplayOrder == null || Product.DisplayOrder == obj.DisplayOrder)
+                                       && (obj.CompanyID == null || obj.CompanyID == -1 || Product.CompanyID == obj.CompanyID)
+                                       let compareDate = Product.UpdateDate != null ? Product.UpdateDate : Product.CreateDate
+                                       orderby compareDate descending, Product.Name
                                        select Product;
 
             obj.Products = res;
+            InitCompaniesCombobox();
             return View(obj);
         }
 
         //GET
         public IActionResult Create()
         {
+            InitCompaniesCombobox();
             return View();
         }
 
@@ -53,6 +73,7 @@ namespace LearnAspNetCoreMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                obj.CreateDate = DateTime.Now;
                 _db.Products.Add(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Product created successfully!";
@@ -77,6 +98,7 @@ namespace LearnAspNetCoreMVC.Controllers
                 return NotFound();
             }
 
+            InitCompaniesCombobox();
             return View(ProductFromDb);
         }
 
@@ -87,6 +109,7 @@ namespace LearnAspNetCoreMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                obj.UpdateDate = DateTime.Now;
                 _db.Products.Update(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Product updated successfully!";
@@ -101,9 +124,23 @@ namespace LearnAspNetCoreMVC.Controllers
             {
                 return NotFound();
             }
-            var ProductFromDb = _db.Products.Find(id);
-            //var ProductFromDb = _db.Products.FirstOrDefault(u => u.Id == id);
-            //var ProductFromDb = _db.Products.SingleOrDefault(u => u.Id == id);
+
+            var ProductFromDb = (from product in _db.Products
+                                 join company in _db.Companies on product.CompanyID equals company.Id
+                                 where product.Id == id && company != null
+                                 select new Product
+                                 {
+                                     Id = product.Id,
+                                     Name = product.Name,
+                                     DisplayOrder = product.DisplayOrder,
+                                     CompanyID = product.CompanyID,
+                                     Company = company,
+                                     CreateDate = product.CreateDate, 
+                                     UpdateDate = product.UpdateDate,
+                                     DeleteDate = product.DeleteDate,
+                                     IsDelete = product.IsDelete
+                                 }).FirstOrDefault();
+
 
             if (ProductFromDb == null)
             {
@@ -124,7 +161,9 @@ namespace LearnAspNetCoreMVC.Controllers
                 return NotFound();
             }
 
-            _db.Products.Remove(obj);
+            obj.DeleteDate = DateTime.Now;
+            obj.IsDelete = true;
+            _db.Products.Update(obj);
             _db.SaveChanges();
             TempData["success"] = "Product deleted successfully!";
             return RedirectToAction("Index");

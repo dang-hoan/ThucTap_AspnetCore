@@ -18,10 +18,10 @@ namespace LearnAspNetCoreMVC.Models
         [RegularExpression(@"(\+84|84|0)+(3|5|7|8|9|1[2|6|8|9])+([0-9]{8})\b",
             ErrorMessage = "Please enter a valid phone number")]
         public string PhoneNumber { get; set; }
-        public DateTime CreateDate { get; set; } = DateTime.Now;
+        public DateTime? CreateDate { get; set; } = null;
         public DateTime? UpdateDate { get; set; } = null;
         public DateTime? DeleteDate { get; set; } = null;
         public bool IsDelete { get; set; } = false;
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
     }
 }

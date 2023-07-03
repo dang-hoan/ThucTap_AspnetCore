@@ -18,6 +18,7 @@ D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.Features.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.CodeAnalysis.Elfie.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.CodeAnalysis.Features.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.CodeAnalysis.Razor.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.CodeAnalysis.Scripting.dll
@@ -255,4 +256,3 @@ D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\obj\Debug\net7.0\refint\Le
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\obj\Debug\net7.0\LearnAspNetCoreMVC.pdb
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\obj\Debug\net7.0\LearnAspNetCoreMVC.genruntimeconfig.cache
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\obj\Debug\net7.0\ref\LearnAspNetCoreMVC.dll
-D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.CodeAnalysis.Elfie.dll

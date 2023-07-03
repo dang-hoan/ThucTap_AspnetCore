@@ -1,13 +1,13 @@
 ﻿@model ProductViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Product";
 }
 
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2 class="text-primary">Product List</h2>
+            <h2 class="text-primary">Product category</h2>
         </div>
     </div>
     <br />
@@ -15,13 +15,34 @@
     <form method="post" class="mb-3" asp-action="Index">
         <div class="d-flex mb-2">
             <div class="block-size me-4">
+                <label asp-for="Id" class="control-label">Product code:</label>
+                <input asp-for="Id" class="form-control me-sm-2 w-20" placeholder="Product code (0)">
+            </div>
+            <div class="block-size me-4">
                 <label asp-for="Name" class="control-label">Name:</label>
                 <input asp-for="Name" class="form-control me-sm-2 w-20" placeholder="Product name (Balo)">
             </div>
-            <div class="block-size">
+            <div class="block-size me-4">
                 <label asp-for="DisplayOrder" class="control-label">Number of products:</label>
                 <input asp-for="DisplayOrder" class="form-control me-sm-2 w-20" placeholder="Display order (10)">
                 <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            </div>
+            <div class="block-size">
+                <label asp-for="CompanyID" class="control-label">Company name:</label>
+                <select asp-for="CompanyID" class="form-select" placeholder="Company name (TNHH 1 thanh vien)">
+                    @{
+                        <option value="-1">All</option>
+                        var listCompanies = TempData["ListCompanies"] as IEnumerable<Company>;
+                        if(listCompanies != null)
+                        {
+                            foreach (Company company in listCompanies)
+                            {
+                                <option value="@company.Id">@company.Name</option>
+                            }                            
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CompanyID" class="text-danger"></span>
             </div>
         </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Search</button>
@@ -31,10 +52,16 @@
         <thead>
             <tr>
                 <th>
-                    Product Name
+                    Product code
                 </th>
                 <th>
-                    Display Order
+                    Product name
+                </th>
+                <th>
+                    Display order
+                </th>
+                <th>
+                    Company name
                 </th>
                 <th></th>
                 <th></th>
@@ -44,11 +71,17 @@
             @foreach(var obj in Model.Products)
             {
                 <tr>
-                    <td width="50%">
-                        @obj.Name
+                    <td width="10%">
+                        @obj.Id
                     </td>
                     <td width="30%">
+                        @obj.Name
+                    </td>
+                    <td width="20%">
                         @obj.DisplayOrder
+                    </td>
+                    <td width="40%">
+                        @obj.Company.Name
                     </td>
                     <td>
                         <div class="w-80 btn-group" role="group">
