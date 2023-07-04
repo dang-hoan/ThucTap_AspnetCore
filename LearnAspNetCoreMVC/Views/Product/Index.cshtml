@@ -1,0 +1,115 @@
+﻿@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Product";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Product category</h2>
+        </div>
+    </div>
+    <br />
+
+    <form method="post" class="mb-3" asp-action="Index">
+        <div class="d-flex mb-2">
+            <div class="block-size me-4">
+                <label asp-for="Id" class="control-label">Product code:</label>
+                <input asp-for="Id" class="form-control me-sm-2 w-20" placeholder="Product code (0)">
+            </div>
+            <div class="block-size me-4">
+                <label asp-for="Name" class="control-label">Name:</label>
+                <input asp-for="Name" class="form-control me-sm-2 w-20" placeholder="Product name (Balo)">
+            </div>
+            <div class="block-size me-4">
+                <label asp-for="DisplayOrder" class="control-label">Number of products:</label>
+                <input asp-for="DisplayOrder" class="form-control me-sm-2 w-20" placeholder="Display order (10)">
+                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            </div>
+            <div class="block-size">
+                <label asp-for="CompanyID" class="control-label">Company name:</label>
+                <select asp-for="CompanyID" class="form-select">
+                    @{
+                        <option value="-1">All</option>
+                        var listCompanies = TempData["ListCompanies"] as IEnumerable<Company>;
+                        if(listCompanies != null)
+                        {
+                            foreach (Company company in listCompanies)
+                            {
+                                <option value="@company.Id">@company.Name</option>
+                            }                            
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CompanyID" class="text-danger"></span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Search</button>
+    </form>
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Product code
+                </th>
+                <th>
+                    Product name
+                </th>
+                <th>
+                    Display order
+                </th>
+                <th>
+                    Company name
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var obj in Model.Products)
+            {
+                <tr>
+                    <td width="15%">
+                        @obj.Id
+                    </td>
+                    <td width="30%">
+                        @obj.Name
+                    </td>
+                    <td width="15%">
+                        @obj.DisplayOrder
+                    </td>
+                    <td width="40%">
+                        @obj.Company.Name
+                    </td>
+                    <td>
+                        <div class="w-80 btn-group" role="group">
+                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@obj.Id"
+                            class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> Edit</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Product" asp-action="Delete" asp-route-id="@obj.Id"
+                            class="btn btn-danger mx-2"><i class="bi bi-trash3"></i> Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="text-end">
+        <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> &nbsp; Create New Product
+        </a>
+    </div>
+
+</div>
+
+@*@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}*@
