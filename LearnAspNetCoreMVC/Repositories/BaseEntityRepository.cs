@@ -24,7 +24,7 @@ namespace LearnAspNetCoreMVC.Repositories
 
                 if (pageSize != null && pageNumber != null)
                 {
-                    return data.Skip((int)((pageNumber - 1) * pageSize)).Take((int)pageSize);
+                    data = data.Skip((int)((pageNumber - 1) * pageSize)).Take((int)pageSize);
                 }
 
                 return data;

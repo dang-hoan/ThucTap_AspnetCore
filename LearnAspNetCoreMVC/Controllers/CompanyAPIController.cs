@@ -86,15 +86,28 @@ namespace LearnAspNetCoreMVC.Controllers
                                         (name == null || company.Name.Contains(name)) &&
                                         (address == null || company.Address.Contains(address)) &&
                                         (phoneNumber == null || company.PhoneNumber.Contains(phoneNumber)), pageSize, pageNumber);
-
-            if (!data.Any())
+            try
             {
-                return NotFound(new APIResponse
+                if (!data.Any())
                 {
-                    StatusCode = StatusCodes.Status404NotFound,
+                    return NotFound(new APIResponse
+                    {
+                        StatusCode = StatusCodes.Status404NotFound,
+                        IsSuccess = false,
+                        Message = "Couldn't find any satisfied companies or there is an error occurred!"
+                    });
+                }
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new APIResponse
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
                     IsSuccess = false,
-                    Message = "Couldn't find any satisfied companies or there is an error occurred!"
+                    Message = "There is an error in adding data to database!"
                 });
+
             }
 
             IEnumerable<Company> res = from company in data
