@@ -1,5 +1,7 @@
 ﻿using LearnAspNetCoreMVC.Data;
 using LearnAspNetCoreMVC.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace LearnAspNetCoreMVC.Repositories
 {
@@ -11,7 +13,27 @@ namespace LearnAspNetCoreMVC.Repositories
         {
             _context = context;
         }
+        public override IQueryable<T> Get(Expression<Func<T, bool>>? filter = null, int? pageSize = null, int? pageNumber = null)
+        {
+            IQueryable<T> data = _context.Set<T>().Where(entity => entity.IsDelete == false).AsNoTracking();
 
+            try
+            {
+                if (filter != null)
+                    data = data.Where(filter);
+
+                if (pageSize != null && pageNumber != null)
+                {
+                    return data.Skip((int)((pageNumber - 1) * pageSize)).Take((int)pageSize);
+                }
+
+                return data;
+            }catch(Exception)
+            {
+                return Enumerable.Empty<T>().AsQueryable().AsNoTracking();
+            }
+
+        }
         public override int Add(T entity)
         {
             entity.CreateDate = DateTime.Now;

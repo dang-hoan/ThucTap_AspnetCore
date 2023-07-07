@@ -11,11 +11,22 @@ namespace LearnAspNetCoreMVC.Controllers
         {
             _companyRepository = companyRepository;
         }
+
+        //private bool IsSwaggerRequest()
+        //{
+        //    //var userAgent = Request.Headers[HeaderNames.UserAgent].ToString();
+        //    //return userAgent.Contains("Swagger");
+
+        //    var headers = Request.Headers;
+        //    var isSwaggerRequest = headers.ContainsKey("X-Requested-With") && headers["X-Requested-With"] == "XMLHttpRequest";
+        //    isSwaggerRequest = isSwaggerRequest || (headers.ContainsKey("Referer") && headers["Referer"].ToString().Contains("/swagger"));
+        //    return isSwaggerRequest;
+        //}
+
         //GET
         public IActionResult Index()
         {
-            IEnumerable<Company> objCompanyList = from Company in _companyRepository.GetAll()
-                                                  where Company.IsDelete == false
+            IEnumerable<Company> objCompanyList = from Company in _companyRepository.Get()
                                                   let compareDate = Company.UpdateDate != null ? Company.UpdateDate : Company.CreateDate
                                                   orderby compareDate descending, Company.Name
                                                   select Company;
@@ -25,6 +36,7 @@ namespace LearnAspNetCoreMVC.Controllers
                 Companys = objCompanyList,
                 Id = null
             };
+
             return View(viewModel);
         }
 
@@ -33,9 +45,8 @@ namespace LearnAspNetCoreMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(CompanyViewModel obj)
         {
-            IEnumerable<Company> res = from Company in _companyRepository.GetAll()
-                                       where Company.IsDelete == false
-                                       && (obj.Id == null || Company.Id == obj.Id)
+            IEnumerable<Company> res = from Company in _companyRepository.Get()
+                                       where (obj.Id == null || Company.Id == obj.Id)
                                        && (obj.Name == null || Company.Name.Contains(obj.Name))
                                        && (obj.Address == null || Company.Address.Contains(obj.Address))
                                        && (obj.PhoneNumber == null || Company.PhoneNumber.Contains(obj.PhoneNumber))
@@ -44,6 +55,7 @@ namespace LearnAspNetCoreMVC.Controllers
                                        select Company;
 
             obj.Companys = res;
+
             return View(obj);
         }
 
@@ -71,6 +83,7 @@ namespace LearnAspNetCoreMVC.Controllers
                     return View(obj);
                 }
             }
+
             return View(obj);
         }
 
@@ -109,6 +122,7 @@ namespace LearnAspNetCoreMVC.Controllers
                     return View(obj);
                 }
             }
+
             return View(obj);
         }
         //GET
@@ -157,6 +171,7 @@ namespace LearnAspNetCoreMVC.Controllers
                     return View(obj);
                 }
             }
+
             return View(obj);
         }
     }

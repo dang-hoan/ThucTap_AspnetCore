@@ -16,16 +16,14 @@ namespace LearnAspNetCoreMVC.Controllers
         }
         public void InitCompaniesCombobox()
         {
-            TempData["ListCompanies"] = from Company in _companyRepository.GetAll()
-                                        where Company.IsDelete == false
+            TempData["ListCompanies"] = from Company in _companyRepository.Get()
                                         select Company;
         }
         //GET
         public IActionResult Index()
         {
-            IEnumerable<Product> objProductList = from product in _productRepository.GetAll()
-                                                  join company in _companyRepository.GetAll() on product.CompanyID equals company.Id
-                                                  where product.IsDelete == false && product.Company != null
+            IEnumerable<Product> objProductList = from product in _productRepository.Get()
+                                                  join company in _companyRepository.Get() on product.CompanyID equals company.Id
                                                   let compareDate = product.UpdateDate != null ? product.UpdateDate : product.CreateDate
                                                   orderby compareDate descending, product.Name
                                                   select new Product
@@ -56,10 +54,9 @@ namespace LearnAspNetCoreMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(ProductViewModel obj)
         {
-            IEnumerable<Product> res = from product in _productRepository.GetAll()
-                                       join company in _companyRepository.GetAll() on product.CompanyID equals company.Id
-                                       where product.IsDelete == false
-                                       && (obj.Id == null || product.Id == obj.Id)
+            IEnumerable<Product> res = from product in _productRepository.Get()
+                                       join company in _companyRepository.Get() on product.CompanyID equals company.Id
+                                       where (obj.Id == null || product.Id == obj.Id)
                                        && (obj.Name == null || product.Name.Contains(obj.Name))
                                        && (obj.DisplayOrder == null || product.DisplayOrder == obj.DisplayOrder)
                                        && (obj.CompanyID == null || obj.CompanyID == -1 || product.CompanyID == obj.CompanyID)
@@ -154,8 +151,8 @@ namespace LearnAspNetCoreMVC.Controllers
                 return NotFound();
             }
 
-            var ProductFromDb = (from product in _productRepository.GetAll()
-                                 join company in _companyRepository.GetAll() on product.CompanyID equals company.Id
+            var ProductFromDb = (from product in _productRepository.Get()
+                                 join company in _companyRepository.Get() on product.CompanyID equals company.Id
                                  where product.Id == id
                                  select new Product
                                  {

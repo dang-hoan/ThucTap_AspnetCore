@@ -6,9 +6,14 @@ D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\LearnAspN
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\LearnAspNetCoreMVC.runtimeconfig.json
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\LearnAspNetCoreMVC.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\LearnAspNetCoreMVC.pdb
+D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\AutoMapper.dll
+D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Azure.Core.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Azure.Identity.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Humanizer.dll
+D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.AspNetCore.Razor.Language.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.Build.dll
@@ -53,6 +58,7 @@ D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Mono.TextTemplating.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Newtonsoft.Json.dll
+D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\NuGet.Common.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\NuGet.Configuration.dll
 D:\Code\vs data\LearnAspNetCoreMVC\LearnAspNetCoreMVC\bin\Debug\net7.0\NuGet.DependencyResolver.Core.dll

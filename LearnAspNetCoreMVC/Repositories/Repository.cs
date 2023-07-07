@@ -1,7 +1,6 @@
 ﻿using LearnAspNetCoreMVC.Data;
-using LearnAspNetCoreMVC.Models;
-using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace LearnAspNetCoreMVC.Repositories
 {
@@ -19,9 +18,26 @@ namespace LearnAspNetCoreMVC.Repositories
             return _context.Set<T>().Find(id);
         }
 
-        public IQueryable<T> GetAll()
+        public virtual IQueryable<T> Get(Expression<Func<T, bool>>? filter = null, int? pageSize = null, int? pageNumber = null)
         {
-            return _context.Set<T>().AsNoTracking();
+            IQueryable<T> data = _context.Set<T>().AsNoTracking();
+
+            try
+            {
+                if (filter != null)
+                    data = data.Where(filter);
+
+                if (pageSize != null && pageNumber != null)
+                {
+                    return data.Skip((int)((pageNumber - 1) * pageSize)).Take((int)pageSize);
+                }
+
+                return data;
+
+            }catch (Exception)
+            {
+                return Enumerable.Empty<T>().AsQueryable().AsNoTracking();
+            }
         }
 
         public virtual int Add(T entity)
