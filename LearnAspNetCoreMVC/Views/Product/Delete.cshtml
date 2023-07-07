@@ -1,4 +1,4 @@
-﻿@model Product
+﻿@model ProductView
 
 <form method="post" asp-action="Delete">
     @*<input asp-for="Id" hidden />*@
@@ -16,8 +16,8 @@
             <input asp-for="DisplayOrder" class="form-control" disabled />
         </div>
         <div class="mb-3">
-            <label>Company</label>
-            <input value='@(Model.Company != null ? Model.Company.Name : "")' class="form-control" disabled />
+            <label asp-for="CompanyName"></label>
+            <input asp-for="CompanyName" class="form-control" disabled />
         </div>
         <input asp-for="CreateDate" hidden />
         <input asp-for="UpdateDate" hidden />

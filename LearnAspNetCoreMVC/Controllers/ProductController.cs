@@ -1,15 +1,13 @@
 ﻿using LearnAspNetCoreMVC.Data;
 using LearnAspNetCoreMVC.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LearnAspNetCoreMVC.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly Data.ApplicationDBContext _db;
-        public ProductController(Data.ApplicationDBContext db)
+        private readonly ApplicationDBContext _db;
+        public ProductController(ApplicationDBContext db)
         {
             _db = db;
         }
@@ -22,11 +20,11 @@ namespace LearnAspNetCoreMVC.Controllers
         //GET
         public IActionResult Index()
         {
-            IEnumerable<Product> objProductList = from Product in _db.Products
-                                                  where Product.IsDelete == false
-                                                  let compareDate = Product.UpdateDate != null ? Product.UpdateDate : Product.CreateDate
-                                                  orderby compareDate descending, Product.Name
-                                                  select Product;
+            IEnumerable<ProductView> objProductList = from Product in _db.ProductViews
+                                                      where Product.IsDelete == false
+                                                      let compareDate = Product.UpdateDate != null ? Product.UpdateDate : Product.CreateDate
+                                                      orderby compareDate descending, Product.Name
+                                                      select Product;
 
             ProductViewModel viewModel = new ProductViewModel()
             {
@@ -44,7 +42,7 @@ namespace LearnAspNetCoreMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(ProductViewModel obj)
         {
-            IEnumerable<Product> res = from Product in _db.Products
+            IEnumerable<ProductView> res = from Product in _db.ProductViews
                                        where Product.IsDelete == false
                                        && (obj.Id == null || Product.Id == obj.Id)
                                        && (obj.Name == null || Product.Name.Contains(obj.Name))
@@ -127,16 +125,32 @@ namespace LearnAspNetCoreMVC.Controllers
                 return NotFound();
             }
 
-            var ProductFromDb = (from product in _db.Products
-                                 join company in _db.Companies on product.CompanyId equals company.Id
+            //var ProductFromDb = (from product in _db.Products
+            //                     join company in _db.Companies on product.CompanyId equals company.Id
+            //                     where product.Id == id
+            //                     select new Product
+            //                     {
+            //                         Id = product.Id,
+            //                         Name = product.Name,
+            //                         DisplayOrder = product.DisplayOrder,
+            //                         CompanyId = product.CompanyId,
+            //                         Company = company,
+            //                         CreateDate = product.CreateDate,
+            //                         UpdateDate = product.UpdateDate,
+            //                         DeleteDate = product.DeleteDate,
+            //                         IsDelete = product.IsDelete
+            //                     }).FirstOrDefault();
+
+
+            var ProductFromDb = (from product in _db.ProductViews
                                  where product.Id == id
-                                 select new Product
+                                 select new ProductView
                                  {
                                      Id = product.Id,
                                      Name = product.Name,
                                      DisplayOrder = product.DisplayOrder,
                                      CompanyId = product.CompanyId,
-                                     Company = company,
+                                     CompanyName = product.CompanyName,
                                      CreateDate = product.CreateDate,
                                      UpdateDate = product.UpdateDate,
                                      DeleteDate = product.DeleteDate,
@@ -170,13 +184,5 @@ namespace LearnAspNetCoreMVC.Controllers
             TempData["success"] = "Product deleted successfully!";
             return RedirectToAction("Index");
         }
-
-        //POST
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Search()
-        //{
-        //    return Index();
-        //}
     }
 }

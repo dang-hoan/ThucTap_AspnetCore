@@ -4,3 +4,9 @@ update-database
 
 *DB first:
 Scaffold-DbContext "Name=ConnectionStrings:DefaultConnection" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+*Update a table in DB first
+Scaffold-DbContext "Name=ConnectionStrings:DefaultConnection" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Tables <Table_name>
+
+->Update multiple tables:
+Scaffold-DbContext "Name=ConnectionStrings:DefaultConnection" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Tables Table1, Table2, Table3

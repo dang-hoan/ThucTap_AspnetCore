@@ -6,8 +6,8 @@ namespace LearnAspNetCoreMVC.Controllers
 {
     public class CompanyController : Controller
     {
-        private readonly Data.ApplicationDBContext _db;
-        public CompanyController(Data.ApplicationDBContext db)
+        private readonly ApplicationDBContext _db;
+        public CompanyController(ApplicationDBContext db)
         {
             _db = db;
         }
